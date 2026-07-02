@@ -1,101 +1,73 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Hero from "../components/home/hero";
+import Collections from "../components/home/collections";
+import Bestsellers from "../components/home/bestsellers";
+import Reviews from "../components/home/reviews";
+import Ugc from "../components/home/ugc";
+import PromoCountdown from "../components/home/promo-countdown";
+
+export const metadata: Metadata = {
+  title: "Maison Écorce | Haute Maroquinerie & Souliers Toscans",
+  description:
+    "Découvrez l'excellence de la maroquinerie italienne. Bottes, sandales et sacs fabriqués à la main en Toscane avec des cuirs à tannage végétal durables.",
+  alternates: {
+    canonical: "https://maison-ecorce.vercel.app",
+  },
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const brandTickerValues = [
+    "Tannage Végétal Certifié",
+    "Cousu Blake Artisanal",
+    "Cuir de Veau Pleine Fleur",
+    "Conçu pour Durer",
+    "Atelier en Toscane",
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="w-full flex flex-col overflow-hidden">
+      {/* 1. Full height Hero */}
+      <Hero />
+
+      {/* 2. Secondary brand values ticker scroll - Reverse flow */}
+      <div className="w-full bg-[#0F0E0C] text-[#FDFBF7] py-4 overflow-hidden border-t border-b border-white/5 relative z-20 text-[10px] font-sans tracking-[0.25em] uppercase font-semibold">
+        <div className="flex whitespace-nowrap">
+          <div className="flex shrink-0 animate-marquee-slow gap-16 pr-16 items-center">
+            {brandTickerValues.map((val) => (
+              <React.Fragment key={val}>
+                <span>{val}</span>
+                <span className="text-[#D4AF37]">•</span>
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="flex shrink-0 animate-marquee-slow gap-16 pr-16 items-center" aria-hidden="true">
+            {brandTickerValues.map((val) => (
+              <React.Fragment key={val}>
+                <span>{val}</span>
+                <span className="text-[#D4AF37]">•</span>
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* 3. Curated Collections grid */}
+      <Collections />
+
+      {/* 4. Bestsellers highlights */}
+      <Bestsellers />
+
+      {/* 5. Countdown promo block */}
+      <PromoCountdown />
+
+      {/* 6. Client reviews deck */}
+      <Reviews />
+
+      {/* 7. Instagram UGC wall */}
+      <Ugc />
     </div>
   );
 }
+
+// React import to comply with TSX compiler in Next.js
+import React from "react";

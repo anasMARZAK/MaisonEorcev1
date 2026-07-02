@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maison Écorce — Souliers & Maroquinerie d'Exception
 
-## Getting Started
+Maison Écorce est une vitrine e-commerce haut de gamme conçue pour présenter une collection exclusive de bottes, sandales et maroquinerie d'exception, façonnés à la main dans notre atelier familial historique en Toscane. 
 
-First, run the development server:
+L'expérience utilisateur allie une esthétique éditoriale brutaliste à des transitions fluides, un mode sombre immersif et une validation stricte des données de bout en bout.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🛠️ Stack Technique
+
+* **Framework :** [Next.js 15 App Router](https://nextjs.org/) (Server Components, Suspense, Dynamic Metadata, SEO & Canonical URLs).
+* **Langage :** [TypeScript](https://www.typescript.org/) (Strict compilation, typages robustes pour l'API Storefront).
+* **Validation de Données :** [Zod](https://zod.dev/) (Validation à l'exécution de toutes les requêtes GraphQL et formulaires utilisateur).
+* **Styles :** [Tailwind CSS v3](https://tailwindcss.com/) (Thème hybride clair/sombre, animations fluides, grille réactive brutaliste).
+* **Gestion d'État :** [Zustand v5](https://github.com/pmndrs/zustand) (Panier d'achat côté client persistant avec middleware).
+* **Requêtes Asynchrones :** [TanStack Query v5](https://tanstack.com/query/latest) (Synchronisation client/serveur, invalidation de cache, gestion des mutations).
+* **Composants UI :** [shadcn/ui](https://ui.shadcn.com/) (Composants Sheet, Dialog, Skeleton, intégrés manuellement).
+* **Animations & Défilement :** [Framer Motion](https://www.framer.com/motion/) & [Lenis Smooth Scroll](https://lenis.darkroom.engineering/).
+
+---
+
+## 📂 Architecture des Dossiers
+
+```
+shopifystorev1/
+├── app/                      # Dossier des routes Next.js 15
+│   ├── about/                # Page Héritage de la marque (Server entrypoint)
+│   ├── policies/             # Page Politiques Légales (Server entrypoint)
+│   ├── products/             # Catalogue principal (Server entrypoint)
+│   │   ├── [handle]/         # Fiche Produit Dynamique (Server entrypoint)
+│   │   └── products-client.tsx # Composant de présentation du catalogue
+│   ├── error.tsx             # Limite d'erreur globale brutaliste
+│   ├── layout.tsx            # Mise en page racine (Lenis, Providers)
+│   └── page.tsx              # Page d'accueil interactive
+├── components/               # Composants d'interface réutilisables
+│   ├── home/                 # Composants spécifiques à la page d'accueil (Hero, Reviews)
+│   ├── layout/               # Composants globaux (Navbar, Footer, CartDrawer)
+│   ├── product/              # Composants du catalogue (Gallery, Variants, Accordions)
+│   └── ui/                   # Composants de base shadcn/ui (Sheet, Dialog, Skeleton)
+├── hooks/                    # Hooks React personnalisés (useCart, useLenis)
+├── lib/                      # Utilitaires globaux (fetchers, dictionnaire de langues)
+│   └── shopify/              # Client GraphQL (réel et simulation)
+├── schemas/                  # Déclarations Zod (Shopify API & formulaires)
+├── store/                    # États globaux Zustand (Panier, Langue, Thème)
+└── types/                    # Déclarations de types TypeScript
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Configuration & Variables d'Environnement
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pour lancer l'application en mode de production réel connecté à Shopify Storefront, créez un fichier `.env.local` à la racine du projet avec les variables suivantes :
 
-## Learn More
+| Variable | Description | Exemple |
+| :--- | :--- | :--- |
+| `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` | Domaine public de votre boutique Shopify. | `maison-ecorce.myshopify.com` |
+| `NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Jeton d'accès public à l'API de Storefront. | `ab12c345def678gh90ij12kl34mn56op` |
+| `SHOPIFY_STORE_DOMAIN` | Domaine utilisé côté serveur (client réel). | `maison-ecorce.myshopify.com` |
+| `SHOPIFY_STOREFRONT_ACCESS_TOKEN` | Jeton d'accès utilisé côté serveur (client réel). | `ab12c345def678gh90ij12kl34mn56op` |
 
-To learn more about Next.js, take a look at the following resources:
+### 🔄 Bascule entre Client Réel et Simulation (Mock)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+L'application intègre un mécanisme intelligent de repli. Si les variables d'environnement Shopify ne sont pas configurées, le système bascule automatiquement sur un client de simulation local (`lib/shopify/mock-client.ts`) fournissant des données toscanes pré-remplies, assurant ainsi une disponibilité continue hors-ligne ou pendant les phases de prévisualisation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Installation & Démarrage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Installer les dépendances :**
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Démarrer le serveur de développement :**
+   ```bash
+   npm run dev
+   ```
+   L'application sera accessible sur `http://localhost:3000`.
+
+3. **Compiler le projet pour la production :**
+   ```bash
+   npm run build
+   ```
+
+4. **Lancer le serveur de production :**
+   ```bash
+   npm run start
+   ```
+
+---
+
+## ✍️ Examen Légal
+
+La page `/policies` contient des mentions et modèles légaux standard à titre de démonstration. Avant tout déploiement en production marchande réelle, ces textes doivent être révisés et approuvés par un conseiller juridique agréé.

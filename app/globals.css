@@ -2,26 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #f5f3ee; /* warm editorial beige */
+    --foreground: #1a1917; /* raw charcoal ink */
+    
+    --card: #f5f3ee;
+    --card-foreground: #1a1917;
+    
+    --popover: #f5f3ee;
+    --popover-foreground: #1a1917;
+    
+    --primary: #1a1917;
+    --primary-foreground: #f5f3ee;
+    
+    --secondary: #e9e5db; /* slightly darker beige */
+    --secondary-foreground: #1a1917;
+    
+    --muted: #e9e5db;
+    --muted-foreground: #6b665c;
+    
+    --accent: #c49b66; /* brass gold */
+    --accent-foreground: #1a1917;
+    
+    --destructive: #9b2c2c; /* crimson red */
+    --destructive-foreground: #f5f3ee;
+    
+    --border: #1a1917; /* thick black borders */
+    --input: #1a1917;
+    --ring: #c49b66;
+    
+    --radius: 0px; /* strict 90-degree corners */
+    
+    --font-sans: var(--font-sans);
+    --font-serif: var(--font-serif);
+  }
+
+  .dark {
+    --background: #1a1917; /* raw charcoal ink */
+    --foreground: #f5f3ee; /* warm editorial beige */
+    
+    --card: #22211f;
+    --card-foreground: #f5f3ee;
+    
+    --popover: #22211f;
+    --popover-foreground: #f5f3ee;
+    
+    --primary: #f5f3ee;
+    --primary-foreground: #1a1917;
+    
+    --secondary: #2c2b28;
+    --secondary-foreground: #f5f3ee;
+    
+    --muted: #2c2b28;
+    --muted-foreground: #a39f95;
+    
+    --accent: #c49b66;
+    --accent-foreground: #1a1917;
+    
+    --border: #f5f3ee; /* thick white borders */
+    --input: #f5f3ee;
+    --ring: #c49b66;
+    
+    --destructive: #9b2c2c;
+    --destructive-foreground: #f5f3ee;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-medium;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.14 0.002 45 / 15%);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.14 0.002 45 / 30%);
+}
+
+/* Organic Tactile Noise Filter Overlay */
+.noise-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.024; /* Elevated slightly for editorial paper grain look */
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Brutalist Flat Shadow Utilities */
+.shadow-brutal {
+  box-shadow: 4px 4px 0px 0px var(--border);
+}
+.shadow-brutal-lg {
+  box-shadow: 6px 6px 0px 0px var(--border);
+}
+.shadow-brutal-sm {
+  box-shadow: 2px 2px 0px 0px var(--border);
+}
+
+/* Lenis smooth scrolling configuration styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis-target {
+  scroll-behavior: auto !important;
 }
