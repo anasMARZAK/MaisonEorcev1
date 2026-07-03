@@ -2,19 +2,35 @@ import axiosInstance from "../axios";
 import { Product, Collection, Cart, ProductReview, ReviewAggregate } from "../../types/shopify";
 import * as schemas from "../../schemas/shopify";
 
-// Stub out real Shopify Storefront API queries
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || "";
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || "";
+// Resolve environment variables supporting both server-only and client-safe public prefixes
+const getStoreDomain = (): string => {
+  return (
+    process.env.SHOPIFY_STORE_DOMAIN ||
+    process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
+    ""
+  );
+};
+
+const getStorefrontAccessToken = (): string => {
+  return (
+    process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
+    process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
+    ""
+  );
+};
 
 // Custom fetch helper for Shopify GraphQL queries
 const shopifyFetch = async <T>(query: string, variables: Record<string, unknown> = {}): Promise<T> => {
-  if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
+  const domain = getStoreDomain();
+  const token = getStorefrontAccessToken();
+
+  if (!domain || !token) {
     throw new Error(
-      "Shopify domain or access token missing. Fill in SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN in .env.local to run the real client."
+      "Shopify domain or access token missing. Fill in SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN (or their NEXT_PUBLIC_ equivalents) to run the real client."
     );
   }
 
-  const endpoint = `https://${SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
+  const endpoint = `https://${domain}/api/2024-01/graphql.json`;
   
   const response = await axiosInstance.post(
     endpoint,
@@ -22,7 +38,7 @@ const shopifyFetch = async <T>(query: string, variables: Record<string, unknown>
     {
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+        "X-Shopify-Storefront-Access-Token": token,
       },
     }
   );
