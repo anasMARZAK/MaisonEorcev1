@@ -80,18 +80,51 @@ export const useCartStore = create<CartStore>()(
         set({ isLoading: true });
         try {
           let activeCartId = cartId;
+          
+          // Resilient bypass: if the stored cart ID is a mock ID, discard it immediately
+          if (activeCartId && activeCartId.startsWith("cart-")) {
+            activeCartId = null;
+          }
+          
           if (!activeCartId) {
             const freshCart = await shopifyClient.createCart(locale);
             activeCartId = freshCart.id;
             set({ cartId: activeCartId });
           }
-          const updatedCart = await shopifyClient.addToCart(
-            activeCartId,
-            [{ merchandiseId, quantity }],
-            locale
-          );
-          updateCart(updatedCart);
-          toast.success(locale === "en" ? "Added to bag" : "Ajouté au panier");
+          
+          try {
+            const updatedCart = await shopifyClient.addToCart(
+              activeCartId,
+              [{ merchandiseId, quantity }],
+              locale
+            );
+            updateCart(updatedCart);
+            toast.success(locale === "en" ? "Added to bag" : "Ajouté au panier");
+          } catch (err: any) {
+            const errMsg = err.message || "";
+            // If the cart is invalid, expired, or not found on Shopify servers, provision a new one and try again
+            if (
+              errMsg.includes("invalid") ||
+              errMsg.includes("not found") ||
+              errMsg.includes("Variable $cartId") ||
+              errMsg.includes("Variable $id")
+            ) {
+              console.warn("Stale or invalid cart ID encountered. Re-provisioning a new Shopify cart...");
+              const freshCart = await shopifyClient.createCart(locale);
+              activeCartId = freshCart.id;
+              set({ cartId: activeCartId });
+              
+              const updatedCart = await shopifyClient.addToCart(
+                activeCartId,
+                [{ merchandiseId, quantity }],
+                locale
+              );
+              updateCart(updatedCart);
+              toast.success(locale === "en" ? "Added to bag" : "Ajouté au panier");
+            } else {
+              throw err;
+            }
+          }
         } catch (err: any) {
           console.error(err);
           toast.error(err.message || (locale === "en" ? "An error occurred." : "Une erreur est survenue."));
@@ -101,7 +134,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       removeItem: async (lineId: string) => {
-        const { cartId, locale, updateCart } = get();
+        const { cartId, locale, updateCart, clearCart } = get();
         if (!cartId) return;
         set({ isUpdating: true });
         try {
@@ -109,6 +142,15 @@ export const useCartStore = create<CartStore>()(
           updateCart(updatedCart);
         } catch (err: any) {
           console.error(err);
+          const errMsg = err.message || "";
+          if (
+            errMsg.includes("invalid") ||
+            errMsg.includes("not found") ||
+            errMsg.includes("Variable $cartId")
+          ) {
+            set({ cartId: null });
+            clearCart();
+          }
           toast.error(err.message || (locale === "en" ? "An error occurred." : "Une erreur est survenue."));
         } finally {
           set({ isUpdating: false });
@@ -116,7 +158,7 @@ export const useCartStore = create<CartStore>()(
       },
 
       updateQuantity: async (lineId: string, quantity: number) => {
-        const { cartId, locale, updateCart } = get();
+        const { cartId, locale, updateCart, clearCart } = get();
         if (!cartId) return;
         set({ isUpdating: true });
         try {
@@ -133,6 +175,15 @@ export const useCartStore = create<CartStore>()(
           updateCart(updatedCart);
         } catch (err: any) {
           console.error(err);
+          const errMsg = err.message || "";
+          if (
+            errMsg.includes("invalid") ||
+            errMsg.includes("not found") ||
+            errMsg.includes("Variable $cartId")
+          ) {
+            set({ cartId: null });
+            clearCart();
+          }
           toast.error(err.message || (locale === "en" ? "An error occurred." : "Une erreur est survenue."));
         } finally {
           set({ isUpdating: false });
