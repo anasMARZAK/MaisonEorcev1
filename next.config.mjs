@@ -5,7 +5,7 @@ const cspHeader = `
   style-src 'self' 'unsafe-inline';
   img-src 'self' blob: data: https://images.unsplash.com https://plus.unsplash.com https://cdn.shopify.com;
   font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-  connect-src 'self' https://images.unsplash.com https://cdn.shopify.com;
+  connect-src 'self' https://images.unsplash.com https://cdn.shopify.com https://*.myshopify.com;
   frame-src 'self';
   object-src 'none';
   base-uri 'self';

@@ -30,7 +30,7 @@ const shopifyFetch = async <T>(query: string, variables: Record<string, unknown>
     );
   }
 
-  const endpoint = `https://${domain}/api/2024-01/graphql.json`;
+  const endpoint = `https://${domain}/api/2025-01/graphql.json`;
   
   const response = await axiosInstance.post(
     endpoint,

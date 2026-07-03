@@ -13,7 +13,7 @@ export default function Bestsellers() {
   const locale = useCartStore((state) => state.locale);
 
   // Fetch all products using TanStack Query
-  const { data: products, isLoading } = useQuery({
+  const { data: products, isLoading, isError } = useQuery({
     queryKey: ["products", { locale }],
     queryFn: () => shopifyClient.getProducts({ locale }),
   });
@@ -58,6 +58,15 @@ export default function Bestsellers() {
               </div>
             ))
           ) : (
+            bestsellers.length === 0 && !isLoading ? (
+              <div className="col-span-full py-12 text-center">
+                <p className="font-mono text-[9px] tracking-widest uppercase text-[#1A1917]/40 dark:text-[#F5F3EE]/40 font-bold">
+                  {isError
+                    ? (locale === "en" ? "Unable to load products" : "Impossible de charger les produits")
+                    : (locale === "en" ? "No bestsellers found" : "Aucun bestseller trouvé")}
+                </p>
+              </div>
+            ) : (
             bestsellers.slice(0, 4).map((product, idx) => (
               <motion.div
                 key={product.id}
@@ -70,6 +79,7 @@ export default function Bestsellers() {
                 <ProductCard product={product} />
               </motion.div>
             ))
+            )
           )}
         </div>
 

@@ -35,7 +35,7 @@ export default function ProductsClient() {
   }, [searchParams]);
 
   // Fetch all products via TanStack Query
-  const { data: products = [], isLoading } = useQuery({
+  const { data: products = [], isLoading, isError, error } = useQuery({
     queryKey: ["products", { locale }],
     queryFn: () => shopifyClient.getProducts({ locale }),
   });
@@ -250,6 +250,15 @@ export default function ProductsClient() {
                     </div>
                   </div>
                 ))
+              ) : isError ? (
+                <div className="col-span-full py-24 border-2 border-dashed border-[#9B2C2C]/35 rounded-none flex flex-col items-center justify-center text-center p-8 gap-4 bg-transparent">
+                  <p className="font-serif italic text-lg text-[#9B2C2C]">
+                    {locale === "en" ? "Unable to load products." : "Impossible de charger les produits."}
+                  </p>
+                  <p className="font-mono text-[9px] tracking-widest uppercase text-[#1A1917]/40 dark:text-[#F5F3EE]/40">
+                    {error?.message || (locale === "en" ? "An error occurred." : "Une erreur est survenue.")}
+                  </p>
+                </div>
               ) : filteredProducts.length === 0 ? (
                 <div className="col-span-full py-24 border-2 border-dashed border-[#1A1917]/35 dark:border-[#F5F3EE]/35 rounded-none flex flex-col items-center justify-center text-center p-8 text-[#1A1917]/40 dark:text-[#F5F3EE]/40 gap-4 bg-transparent">
                   <p className="font-serif italic text-lg">Aucun produit ne correspond à vos filtres.</p>
