@@ -226,9 +226,10 @@ export const realShopifyClient = {
         const parsed = schemas.getCollectionProductsResponseSchema.parse(data);
         return parsed.collection?.products.edges.map((e) => e.node as Product) || [];
       } else {
+        const hasQuery = !!params?.query;
         queryStr = `
-          query GetProducts($lang: LanguageCode, $query: String) @inContext(language: $lang) {
-            products(first: 50, query: $query) {
+          query GetProducts($lang: LanguageCode${hasQuery ? ", $query: String" : ""}) @inContext(language: $lang) {
+            products(first: 50${hasQuery ? ", query: $query" : ""}) {
               edges {
                 node {
                   ...ProductFields
@@ -238,7 +239,9 @@ export const realShopifyClient = {
           }
           ${PRODUCT_FRAGMENT}
         `;
-        variables.query = params?.query || null;
+        if (hasQuery) {
+          variables.query = params.query;
+        }
         const data = await shopifyFetch<unknown>(queryStr, variables);
         const parsed = schemas.getProductsResponseSchema.parse(data);
         return parsed.products.edges.map((e) => e.node as Product) || [];
