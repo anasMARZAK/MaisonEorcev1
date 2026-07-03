@@ -27,9 +27,9 @@ export const productVariantSchema = z.object({
   title: z.string(),
   availableForSale: z.boolean(),
   price: moneySchema,
-  compareAtPrice: moneySchema.nullable(),
+  compareAtPrice: moneySchema.optional().nullable(),
   selectedOptions: z.array(selectedOptionSchema),
-  image: imageSchema.optional(),
+  image: imageSchema.optional().nullable(),
 });
 
 export const collectionSchema = z.object({
@@ -37,7 +37,7 @@ export const collectionSchema = z.object({
   handle: z.string(),
   title: z.string(),
   description: z.string(),
-  image: imageSchema.optional(),
+  image: imageSchema.optional().nullable(),
 });
 
 export const productSchema = z.object({
@@ -45,7 +45,7 @@ export const productSchema = z.object({
   title: z.string(),
   handle: z.string(),
   description: z.string(),
-  descriptionHtml: z.string().optional(),
+  descriptionHtml: z.string().optional().nullable(),
   availableForSale: z.boolean(),
   priceRange: z.object({
     minVariantPrice: moneySchema,
@@ -72,7 +72,7 @@ export const productSchema = z.object({
       })
     ),
   }),
-  options: z.array(productOptionSchema).optional(),
+  options: z.array(productOptionSchema).optional().nullable(),
   tags: z.array(z.string()),
   collections: z
     .object({
@@ -82,7 +82,8 @@ export const productSchema = z.object({
         })
       ),
     })
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 export const cartLineSchema = z.object({
