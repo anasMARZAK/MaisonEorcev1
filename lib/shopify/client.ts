@@ -4,11 +4,17 @@ import * as schemas from "../../schemas/shopify";
 
 // Resolve environment variables supporting both server-only and client-safe public prefixes
 const getStoreDomain = (): string => {
-  return (
+  const rawDomain = (
     process.env.SHOPIFY_STORE_DOMAIN ||
     process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
     ""
-  );
+  ).trim();
+  
+  // Resilient cleaning: remove http://, https://, trailing slashes, paths, and spaces
+  return rawDomain
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/.*$/, "")
+    .toLowerCase();
 };
 
 const getStorefrontAccessToken = (): string => {
@@ -16,7 +22,7 @@ const getStorefrontAccessToken = (): string => {
     process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
     process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN ||
     ""
-  );
+  ).trim();
 };
 
 // Custom fetch helper for Shopify GraphQL queries
@@ -31,6 +37,7 @@ const shopifyFetch = async <T>(query: string, variables: Record<string, unknown>
   }
 
   const endpoint = `https://${domain}/api/2025-01/graphql.json`;
+  console.log("[Shopify Client] Fetching from endpoint:", endpoint);
   
   const response = await axiosInstance.post(
     endpoint,
