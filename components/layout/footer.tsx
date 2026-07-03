@@ -59,12 +59,12 @@ export default function Footer() {
           <h3 className="font-serif text-lg tracking-[0.25em] font-extrabold text-[#1A1917] dark:text-[#F5F3EE] uppercase">
             Maison Écorce
           </h3>
-          <p className="max-w-[200px] leading-relaxed text-[#1A1917]/60 dark:text-[#F5F3EE]/60 font-light">
+          <p className="max-w-[200px] leading-relaxed text-[#1A1917]/75 dark:text-[#F5F3EE]/75 font-light">
             {t("heroSubtitle", locale)}
           </p>
           
           {/* Social Icons */}
-          <div className="flex gap-4 items-center mt-2 text-[#1A1917]/50 dark:text-[#F5F3EE]/50">
+          <div className="flex gap-4 items-center mt-2 text-[#1A1917]/70 dark:text-[#F5F3EE]/70">
             <a href="#" className="hover:text-[#C49B66] transition-colors" aria-label="Instagram">
               <Instagram strokeWidth={1.5} className="size-4" />
             </a>
@@ -140,7 +140,7 @@ export default function Footer() {
           <h4 className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#1A1917] dark:text-[#F5F3EE] font-bold">
             {t("newsletterTitle", locale)}
           </h4>
-          <p className="leading-relaxed text-[#1A1917]/60 dark:text-[#F5F3EE]/60 font-light mb-2">
+          <p className="leading-relaxed text-[#1A1917]/75 dark:text-[#F5F3EE]/75 font-light mb-2">
             {t("newsletterDesc", locale)}
           </p>
 
@@ -176,7 +176,7 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom */}
-      <div className="max-w-6xl mx-auto px-6 pt-12 flex flex-col md:flex-row justify-between items-center gap-6 text-[#1A1917]/50 dark:text-[#F5F3EE]/50 text-[9px] tracking-widest font-mono uppercase font-semibold">
+      <div className="max-w-6xl mx-auto px-6 pt-12 flex flex-col md:flex-row justify-between items-center gap-6 text-[#1A1917]/75 dark:text-[#F5F3EE]/75 text-[9px] tracking-widest font-mono uppercase font-semibold">
         <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
           <span>© 2026 MAISON ÉCORCE. Tous droits réservés.</span>
           <span className="hidden md:inline">•</span>

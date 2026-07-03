@@ -40,14 +40,11 @@ export default function Hero() {
           </motion.span>
 
           {/* Huge Editorial Serif Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
+          <h1
             className="font-serif text-5xl sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] tracking-tight leading-[0.85] font-extrabold uppercase italic lowercase"
           >
             {t("heroTitle", locale)}
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
           <motion.p

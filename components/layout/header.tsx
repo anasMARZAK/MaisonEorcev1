@@ -67,7 +67,7 @@ export default function Header() {
             className="hover:underline transition-all py-1 cursor-pointer"
             title="Toggle Language"
           >
-            LN: <span className="text-[#C49B66]">{locale}</span>
+            LN: <span className="text-[#8B6230] dark:text-[#C49B66]">{locale}</span>
           </button>
 
           {/* Text-based Cart Trigger - Brutalist styling */}

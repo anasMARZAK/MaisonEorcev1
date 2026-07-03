@@ -53,7 +53,7 @@ export default function Reviews({ productHandle = "maison-ecorce" }: ReviewsProp
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b-2 border-[#1A1917]/10 dark:border-[#F5F3EE]/15 pb-8">
           <div className="flex flex-col gap-4">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#C49B66] font-bold">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#8B6230] dark:text-[#C49B66] font-bold">
               {locale === "en" ? "Client Journal" : "Le Journal des Clients"}
             </span>
             <h2 className="font-serif text-4xl md:text-6xl text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-extrabold uppercase italic lowercase leading-none">
@@ -82,7 +82,7 @@ export default function Reviews({ productHandle = "maison-ecorce" }: ReviewsProp
                 </div>
               ))
             ) : reviews.length === 0 ? (
-              <div className="py-12 border-2 border-dashed border-[#1A1917]/20 dark:border-[#F5F3EE]/20 rounded-none flex flex-col items-center justify-center text-center p-6 text-[#1A1917]/40 dark:text-[#F5F3EE]/40 gap-3">
+              <div className="py-12 border-2 border-dashed border-[#1A1917]/20 dark:border-[#F5F3EE]/20 rounded-none flex flex-col items-center justify-center text-center p-6 text-[#1A1917]/70 dark:text-[#F5F3EE]/70 gap-3">
                 <p className="font-serif italic text-lg">Aucun commentaire rédigé pour le moment.</p>
                 <p className="text-[9px] font-mono tracking-wide uppercase font-bold">Soyez le premier à donner votre avis.</p>
               </div>
@@ -100,11 +100,11 @@ export default function Reviews({ productHandle = "maison-ecorce" }: ReviewsProp
                     <div className="flex flex-wrap items-center justify-between gap-2 text-[9px] tracking-wide font-mono font-bold uppercase">
                       <div className="flex items-center gap-3">
                         {renderStars(review.rating)}
-                        <span className="text-[#C49B66]">
+                        <span className="text-[#8B6230] dark:text-[#C49B66]">
                           {review.author}
                         </span>
                       </div>
-                      <span className="text-[#1A1917]/40 dark:text-[#F5F3EE]/40">
+                      <span className="text-[#1A1917]/70 dark:text-[#F5F3EE]/70">
                         {new Date(review.createdAt).toLocaleDateString(locale === "en" ? "en-US" : "fr-FR", {
                           year: "numeric",
                           month: "long",

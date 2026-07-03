@@ -3,18 +3,24 @@ import { Product, Collection, Cart, ProductReview, ReviewAggregate } from "../..
 import * as schemas from "../../schemas/shopify";
 
 // Resolve environment variables supporting both server-only and client-safe public prefixes
-const getStoreDomain = (): string => {
-  const rawDomain = (
+export const getStoreDomain = (): string => {
+  let rawDomain = (
     process.env.SHOPIFY_STORE_DOMAIN ||
     process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
     ""
   ).trim();
   
-  // Resilient cleaning: remove http://, https://, trailing slashes, paths, and spaces
+  // Resilient cleaning: repeatedly remove leading protocols, slashes, and colons
+  while (true) {
+    const next = rawDomain.replace(/^(https?:?\/*|http?:?\/*|\/\/+)/i, "");
+    if (next === rawDomain) break;
+    rawDomain = next;
+  }
+  
   return rawDomain
-    .replace(/^https?:\/\//i, "")
     .replace(/\/.*$/, "")
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
 };
 
 const getStorefrontAccessToken = (): string => {

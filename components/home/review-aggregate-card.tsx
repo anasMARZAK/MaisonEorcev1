@@ -38,7 +38,7 @@ export default function ReviewAggregateCard({
   return (
     <div className="lg:col-span-4 bg-transparent border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none p-6 shadow-brutal">
       <div className="flex flex-col gap-6">
-        <h3 className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold text-[#1A1917]/40 dark:text-[#F5F3EE]/40">
+        <h3 className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold text-[#1A1917]/70 dark:text-[#F5F3EE]/70">
           {t("averageRating", locale)}
         </h3>
         
@@ -48,7 +48,7 @@ export default function ReviewAggregateCard({
             <Skeleton className="h-4 w-32 bg-[#1A1917]/10 dark:bg-[#F5F3EE]/10" />
           </div>
         ) : isAggregateEmpty ? (
-          <p className="text-[10px] font-mono uppercase font-bold text-[#1A1917]/50 dark:text-[#F5F3EE]/50">
+          <p className="text-[10px] font-mono uppercase font-bold text-[#1A1917]/70 dark:text-[#F5F3EE]/70">
             {locale === "en" ? "No reviews written yet." : "Aucun avis rédigé."}
           </p>
         ) : (
@@ -58,7 +58,7 @@ export default function ReviewAggregateCard({
             </span>
             <div className="flex flex-col gap-1">
               {renderStars(Math.round(aggregate.ratingAverage), "size-4")}
-              <span className="text-[9px] text-[#1A1917]/55 dark:text-[#F5F3EE]/55 font-mono uppercase font-bold mt-1">
+              <span className="text-[9px] text-[#1A1917]/70 dark:text-[#F5F3EE]/70 font-mono uppercase font-bold mt-1">
                 {t("reviewsCount", locale).replace("{n}", String(aggregate.ratingCount))}
               </span>
             </div>
@@ -72,7 +72,7 @@ export default function ReviewAggregateCard({
               const count = aggregate.distribution[star] || 0;
               const percent = aggregate.ratingCount > 0 ? (count / aggregate.ratingCount) * 100 : 0;
               return (
-                <div key={star} className="flex items-center gap-3 text-[9px] text-[#1A1917]/60 dark:text-[#F5F3EE]/60 font-mono font-bold">
+                <div key={star} className="flex items-center gap-3 text-[9px] text-[#1A1917]/75 dark:text-[#F5F3EE]/75 font-mono font-bold">
                   <span className="w-3 text-right">{star}</span>
                   <Star className="size-3 text-[#C49B66]" fill="currentColor" />
                   
@@ -84,7 +84,7 @@ export default function ReviewAggregateCard({
                     />
                   </div>
                   
-                  <span className="w-6 text-right text-[#1A1917]/40 dark:text-[#F5F3EE]/40">
+                  <span className="w-6 text-right text-[#1A1917]/70 dark:text-[#F5F3EE]/70">
                     {count}
                   </span>
                 </div>

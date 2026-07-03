@@ -17,7 +17,7 @@ export default function Collections() {
         
         {/* Section Header */}
         <div className="flex flex-col gap-4 max-w-xl">
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#C49B66] font-bold">
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-[#8B6230] dark:text-[#C49B66] font-bold">
             {locale === "en" ? "Curated Universes" : "Univers Choisis"}
           </span>
           <h2 className="font-serif text-4xl md:text-6xl text-[#1A1917] dark:text-[#F5F3EE] tracking-tight font-extrabold uppercase italic lowercase leading-none">

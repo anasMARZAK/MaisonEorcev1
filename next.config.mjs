@@ -1,11 +1,32 @@
-/** @type {import('next').NextConfig} */
+const getStoreDomain = () => {
+  let rawDomain = (
+    process.env.SHOPIFY_STORE_DOMAIN ||
+    process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
+    ""
+  ).trim();
+  
+  while (true) {
+    const next = rawDomain.replace(/^(https?:?\/*|http?:?\/*|\/\/+)/i, "");
+    if (next === rawDomain) break;
+    rawDomain = next;
+  }
+  
+  return rawDomain
+    .replace(/\/.*$/, "")
+    .toLowerCase()
+    .trim();
+};
+
+const storeDomain = getStoreDomain();
+const shopifyConnectSrc = storeDomain ? `https://${storeDomain}` : "";
+
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data: https://images.unsplash.com https://plus.unsplash.com https://cdn.shopify.com;
+  img-src 'self' blob: data: https://images.unsplash.com https://plus.unsplash.com https://cdn.shopify.com ${shopifyConnectSrc};
   font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-  connect-src 'self' https://images.unsplash.com https://cdn.shopify.com https://*.myshopify.com;
+  connect-src 'self' https://images.unsplash.com https://cdn.shopify.com https://*.myshopify.com ${shopifyConnectSrc};
   frame-src 'self';
   object-src 'none';
   base-uri 'self';
