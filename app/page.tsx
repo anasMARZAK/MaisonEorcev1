@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Hero from "../components/home/hero";
 import Collections from "../components/home/collections";
 import Bestsellers from "../components/home/bestsellers";
-import Reviews from "../components/home/reviews";
-import Ugc from "../components/home/ugc";
-import PromoCountdown from "../components/home/promo-countdown";
+import dynamic from "next/dynamic";
+
+const Reviews = dynamic(() => import("../components/home/reviews"));
+const Ugc = dynamic(() => import("../components/home/ugc"));
+const PromoCountdown = dynamic(() => import("../components/home/promo-countdown"));
 
 export const metadata: Metadata = {
   title: "Maison Écorce | Haute Maroquinerie & Souliers Toscans",
