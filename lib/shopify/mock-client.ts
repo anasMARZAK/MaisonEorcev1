@@ -445,9 +445,19 @@ export const mockClient = {
 
   getReviewAggregate: async (productHandle: string): Promise<ReviewAggregate> => {
     await sleep(300);
-    const reviews = getStoredReviews().filter((r) => r.productHandle === productHandle);
+    let reviews = getStoredReviews();
+    
+    // Check if we have any reviews for this handle
+    const hasReviews = reviews.some((r) => r.productHandle === productHandle);
+    if (!hasReviews) {
+      const generated = generateMockReviews(productHandle);
+      reviews = [...reviews, ...generated];
+      setStoredReviews(reviews);
+    }
+    
+    const productReviews = reviews.filter((r) => r.productHandle === productHandle);
 
-    if (reviews.length === 0) {
+    if (productReviews.length === 0) {
       return {
         ratingAverage: 0,
         ratingCount: 0,
@@ -455,11 +465,11 @@ export const mockClient = {
       };
     }
 
-    const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-    const ratingAverage = parseFloat((total / reviews.length).toFixed(1));
+    const total = productReviews.reduce((sum, r) => sum + r.rating, 0);
+    const ratingAverage = parseFloat((total / productReviews.length).toFixed(1));
 
     const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    reviews.forEach((r) => {
+    productReviews.forEach((r) => {
       const rating = r.rating as 5 | 4 | 3 | 2 | 1;
       if (rating in distribution) {
         distribution[rating]++;
@@ -468,7 +478,7 @@ export const mockClient = {
 
     return {
       ratingAverage,
-      ratingCount: reviews.length,
+      ratingCount: productReviews.length,
       distribution,
     };
   },
