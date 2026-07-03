@@ -16,6 +16,146 @@ const getLocale = (locale?: string): string => {
   return locale === "en" ? "en" : "fr";
 };
 
+// --- Mock Reviews Infrastructure ---
+const AUTHORS = [
+  "Clara B.", "Pierre M.", "Marie L.", "Julien D.", "Camille R.",
+  "Lucas G.", "Emma V.", "Thomas P.", "Sarah H.", "Antoine F.",
+  "Chloé S.", "Maxime N.", "Léa K.", "Nicolas B.", "Manon T."
+];
+
+const REVIEWS_POOL = [
+  {
+    rating: 5,
+    title: { fr: "Qualité exceptionnelle", en: "Exceptional quality" },
+    body: {
+      fr: "Le cuir est d'une finesse incroyable et les finitions sont parfaites. On sent le vrai savoir-faire artisanal toscan.",
+      en: "The leather is incredibly fine and the finishes are perfect. You can feel the true Tuscan craftsmanship."
+    }
+  },
+  {
+    rating: 5,
+    title: { fr: "Rien à redire", en: "Perfect in every way" },
+    body: {
+      fr: "Confortable dès le premier jour. Le design minimaliste s'accorde avec absolument toutes mes tenues.",
+      en: "Comfortable from day one. The minimalist design matches absolutely all of my outfits."
+    }
+  },
+  {
+    rating: 4,
+    title: { fr: "Très bel objet", en: "Beautiful piece" },
+    body: {
+      fr: "Superbe silhouette. Le cuir a l'air très résistant. Il taille juste un tout petit peu grand.",
+      en: "Superb silhouette. The leather feels very durable. Fits just a little bit large."
+    }
+  },
+  {
+    rating: 5,
+    title: { fr: "Un investissement que je ne regrette pas", en: "Worth every penny" },
+    body: {
+      fr: "Le cuir commence déjà à se patiner magnifiquement après quelques semaines d'utilisation. Je recommande chaudement.",
+      en: "The leather is already patinating beautifully after a few weeks of use. Highly recommended."
+    }
+  },
+  {
+    rating: 4,
+    title: { fr: "Magnifique couleur", en: "Gorgeous color" },
+    body: {
+      fr: "La couleur est profonde et conforme aux photos. Très bon maintien et coutures très soignées.",
+      en: "The color is deep and true to the photos. Great support and very neat stitching."
+    }
+  },
+  {
+    rating: 5,
+    title: { fr: "Superbe expérience d'achat", en: "Superb buying experience" },
+    body: {
+      fr: "Livraison rapide dans un emballage très soigné. Le produit est tout simplement magnifique.",
+      en: "Fast delivery in very neat packaging. The product is simply beautiful."
+    }
+  }
+];
+
+const generateMockReviews = (productHandle: string): ProductReview[] => {
+  const count = 3 + Math.floor(Math.random() * 4); // 3 to 6 reviews
+  const generated: ProductReview[] = [];
+  
+  // Seed random generator based on productHandle name to get consistent reviews per product
+  let seed = 0;
+  for (let i = 0; i < productHandle.length; i++) {
+    seed += productHandle.charCodeAt(i);
+  }
+  
+  const getSeededRandom = () => {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+  };
+
+  // Simple shuffle helper using seeded random
+  const shuffle = <T>(arr: T[]): T[] => {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(getSeededRandom() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  const shuffledAuthors = shuffle(AUTHORS);
+  const shuffledPool = shuffle(REVIEWS_POOL);
+
+  for (let i = 0; i < Math.min(count, shuffledPool.length); i++) {
+    const poolItem = shuffledPool[i];
+    const author = shuffledAuthors[i % shuffledAuthors.length];
+    
+    // Random date in the last 6 months
+    const daysAgo = Math.floor(getSeededRandom() * 180);
+    const date = new Date();
+    date.setDate(date.getDate() - daysAgo);
+
+    generated.push({
+      id: `rev-gen-${productHandle}-${i}`,
+      productHandle,
+      author,
+      rating: poolItem.rating,
+      title: poolItem.title.fr,
+      body: poolItem.body.fr,
+      createdAt: date.toISOString(),
+    });
+  }
+
+  return generated;
+};
+
+// Default seed reviews
+const DEFAULT_REVIEWS: ProductReview[] = [
+  {
+    id: "rev-1",
+    productHandle: "bottine-chelsea-faubourg",
+    author: "Sophie M.",
+    rating: 5,
+    title: "Absolument magnifiques",
+    body: "Le cuir est d'une qualité incroyable. Très confortables dès la première fois.",
+    createdAt: "2026-06-15T10:30:00Z",
+  },
+  {
+    id: "rev-2",
+    productHandle: "bottine-chelsea-faubourg",
+    author: "Thomas B.",
+    rating: 4,
+    title: "Excellente qualité, taille un peu grand",
+    body: "Très belles bottines Chelsea. Prenez une demi-pointure en dessous si vous hésitez.",
+    createdAt: "2026-06-20T14:15:00Z",
+  },
+  {
+    id: "rev-3",
+    productHandle: "cabas-grand-opera",
+    author: "Hélène D.",
+    rating: 5,
+    title: "Le cabas parfait",
+    body: "Grand, logeable, cuir robuste et finitions impeccables. Je ne m'en sépare plus !",
+    createdAt: "2026-06-28T09:00:00Z",
+  },
+];
+
 // Translate a seeded mock product to target locale
 const translateProduct = (prod: MockProduct, locale: string): Product => {
   return {
@@ -87,36 +227,7 @@ const setStoredReviews = (reviews: ProductReview[]) => {
   localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(reviews));
 };
 
-// Default seed reviews
-const DEFAULT_REVIEWS: ProductReview[] = [
-  {
-    id: "rev-1",
-    productHandle: "bottine-chelsea-faubourg",
-    author: "Sophie M.",
-    rating: 5,
-    title: "Absolument magnifiques",
-    body: "Le cuir est d'une qualité incroyable. Très confortables dès la première fois.",
-    createdAt: "2026-06-15T10:30:00Z",
-  },
-  {
-    id: "rev-2",
-    productHandle: "bottine-chelsea-faubourg",
-    author: "Thomas B.",
-    rating: 4,
-    title: "Excellente qualité, taille un peu grand",
-    body: "Très belles bottines Chelsea. Prenez une demi-pointure en dessous si vous hésitez.",
-    createdAt: "2026-06-20T14:15:00Z",
-  },
-  {
-    id: "rev-3",
-    productHandle: "cabas-grand-opera",
-    author: "Hélène D.",
-    rating: 5,
-    title: "Le cabas parfait",
-    body: "Grand, logeable, cuir robuste et finitions impeccables. Je ne m'en sépare plus !",
-    createdAt: "2026-06-28T09:00:00Z",
-  },
-];
+// Review code moved to the top to prevent hosting ReferenceErrors during build time.
 
 // Mock Shopify client operations
 export const mockClient = {
@@ -317,7 +428,16 @@ export const mockClient = {
   // Review-specific CRUD operations
   getReviews: async (productHandle: string): Promise<ProductReview[]> => {
     await sleep(400); // slightly faster response for reviews
-    const reviews = getStoredReviews();
+    let reviews = getStoredReviews();
+    
+    // Check if we have any reviews for this handle
+    const hasReviews = reviews.some((r) => r.productHandle === productHandle);
+    if (!hasReviews) {
+      const generated = generateMockReviews(productHandle);
+      reviews = [...reviews, ...generated];
+      setStoredReviews(reviews);
+    }
+    
     return reviews
       .filter((r) => r.productHandle === productHandle)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

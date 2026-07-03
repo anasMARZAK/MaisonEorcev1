@@ -37,7 +37,7 @@ export const MOCK_COLLECTIONS = [
       en: "Lightness, comfort, and refinement for warm sunny days.",
     },
     image: {
-      url: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800",
+      url: "/assets/images/generated/maison_ecorce_sandals_category.png",
       altText: "Sandales en cuir d'été",
     },
   },
@@ -63,7 +63,7 @@ export const MOCK_COLLECTIONS = [
       en: "Timeless bags designed for everyday use and travel.",
     },
     image: {
-      url: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800",
+      url: "/assets/images/generated/maison_ecorce_bags_category.png",
       altText: "Collection de sacs",
     },
   },
