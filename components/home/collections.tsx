@@ -46,7 +46,8 @@ export default function Collections() {
                     src={col.image.url}
                     alt={col.image.altText || title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    quality={70}
                     className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] grayscale contrast-[1.02]"
                   />
                   {/* Subtle hover dark layer */}

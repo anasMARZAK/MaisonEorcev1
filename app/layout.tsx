@@ -9,6 +9,7 @@ import PromoTicker from "../components/layout/promo-ticker";
 import CartDrawer from "../components/layout/cart-drawer";
 import LoadingScreen from "../components/layout/loading-screen";
 import PurchaseNotification from "../components/layout/purchase-notification";
+import { getStoreDomain } from "../lib/shopify/client";
 
 // Load Google Fonts for premium Editorial Luxury style
 const cormorant = Cormorant_Garamond({
@@ -66,10 +67,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const domain = getStoreDomain();
+  const shopifyOrigin = domain ? `https://${domain}` : "";
+
   return (
     <html lang="fr" className={`${cormorant.variable} ${outfit.variable} scroll-smooth`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        {shopifyOrigin && (
+          <>
+            <link rel="preconnect" href={shopifyOrigin} crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href={shopifyOrigin} />
+          </>
+        )}
+        <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
       </head>
       <body className="antialiased min-h-screen bg-background text-foreground flex flex-col">
         {/* Client-side Providers wrapper */}
