@@ -73,7 +73,7 @@ export default function AboutClient() {
               className="relative aspect-[3/4] w-full rounded-none border border-[#1A1917]/20 dark:border-[#F5F3EE]/20 overflow-hidden bg-[#e9e5db] dark:bg-[#2c2b28]"
             >
               <Image
-                src="/assets/images/maison_ecorce_about_workbench.png"
+                src="/assets/images/generated/maison_ecorce_about_workbench.png"
                 alt="Artisan leather workshop bench in Tuscany"
                 fill
                 priority

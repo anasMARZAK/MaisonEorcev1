@@ -24,7 +24,7 @@ export const MOCK_COLLECTIONS = [
       en: "Our signature collection of handcrafted leather boots.",
     },
     image: {
-      url: "/assets/images/maison_ecorce_bestseller_boots.png",
+      url: "/assets/images/generated/maison_ecorce_bestseller_boots.png",
       altText: "Bottes en cuir artisanales",
     },
   },
@@ -50,7 +50,7 @@ export const MOCK_COLLECTIONS = [
       en: "Our exclusive line of premium leather goods.",
     },
     image: {
-      url: "/assets/images/maison_ecorce_bestseller_bag.png",
+      url: "/assets/images/generated/maison_ecorce_bestseller_bag.png",
       altText: "Marroquinerie de luxe",
     },
   },
@@ -82,7 +82,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     price: { amount: "320.00", currencyCode: "EUR" },
     compareAtPrice: null,
     images: [
-      { url: "/assets/images/maison_ecorce_bestseller_boots.png", altText: "Bottine Chelsea Faubourg - Vue principale" },
+      { url: "/assets/images/generated/maison_ecorce_bestseller_boots.png", altText: "Bottine Chelsea Faubourg - Vue principale" },
       { url: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=800", altText: "Bottine Chelsea Faubourg - Gros plan cuir" },
     ],
     tags: ["bestseller", "bottes", "cuir", "noir"],
@@ -350,7 +350,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     price: { amount: "480.00", currencyCode: "EUR" },
     compareAtPrice: null,
     images: [
-      { url: "/assets/images/maison_ecorce_bestseller_bag.png", altText: "Cabas Grand Opéra - Cognac" },
+      { url: "/assets/images/generated/maison_ecorce_bestseller_bag.png", altText: "Cabas Grand Opéra - Cognac" },
       { url: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?q=80&w=800", altText: "Cabas Grand Opéra - Gros plan coutures" },
     ],
     tags: ["bestseller", "sacs-en-cuir", "sacs", "cuir", "cognac"],

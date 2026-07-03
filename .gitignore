@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# custom ignored folders
+/public/assets/images/generated/
+/fromuser/
+/shopify_products_import.csv
+/shopify_products_import_v2.csv
+/scratch/

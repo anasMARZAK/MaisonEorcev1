@@ -83,7 +83,7 @@ export default function Hero() {
           className="absolute inset-0 w-full h-[120%]"
         >
           <Image
-            src="/assets/images/maison_ecorce_hero_editorial.png"
+            src="/assets/images/generated/maison_ecorce_hero_editorial.png"
             alt="Maison Écorce leather collection"
             fill
             priority
