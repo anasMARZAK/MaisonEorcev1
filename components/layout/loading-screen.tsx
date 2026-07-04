@@ -36,11 +36,9 @@ export default function LoadingScreen() {
     return () => clearInterval(interval);
   }, [hasLoadedOnce, finishLoading]);
 
-  if (hasLoadedOnce || !isLoading) return null;
-
   return (
     <AnimatePresence>
-      {isLoading && (
+      {!hasLoadedOnce && isLoading && (
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
