@@ -115,6 +115,12 @@ export const DICTIONARY = {
   loading: { fr: "Chargement...", en: "Loading..." },
   errorMsg: { fr: "Une erreur est survenue.", en: "An error occurred." },
   promoEnded: { fr: "L'offre privée a expiré", en: "Private offer has expired" },
+  buyNow: { fr: "Acheter Immédiatement", en: "Buy Now" },
+  favoritesTitle: { fr: "Vos Favoris", en: "Your Favorites" },
+  favoritesEmpty: { fr: "Aucun favori pour le moment.", en: "No favorites yet." },
+  addFavorite: { fr: "Ajouter aux favoris", en: "Add to favorites" },
+  removeFavorite: { fr: "Retirer des favoris", en: "Remove from favorites" },
+  navFavorites: { fr: "Favoris", en: "Favorites" },
 };
 
 export type CopyKey = keyof typeof DICTIONARY & string;

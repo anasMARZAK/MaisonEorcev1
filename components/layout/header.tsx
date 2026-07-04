@@ -6,10 +6,13 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useCartStore } from "../../store/cart-store";
+import { useFavoritesStore } from "../../store/favorites-store";
 import { t } from "../../lib/copy-dict";
 
 export default function Header() {
   const { totalItems, isOpen, setIsOpen, locale, setLocale } = useCartStore();
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const favoriteCount = favorites.length;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -70,6 +73,15 @@ export default function Header() {
             LN: <span className="text-[#8B6230] dark:text-[#C49B66]">{locale}</span>
           </button>
 
+          {/* Favorites Link */}
+          <Link
+            href="/favorites"
+            className="hover:underline transition-all py-1 cursor-pointer"
+            title={t("favoritesTitle", locale)}
+          >
+            {t("navFavorites", locale)} ({favoriteCount})
+          </Link>
+
           {/* Text-based Cart Trigger - Brutalist styling */}
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -127,6 +139,22 @@ export default function Header() {
                   </Link>
                 </motion.div>
               ))}
+
+              {/* Favorites mobile link */}
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -20, opacity: 0 }}
+                transition={{ delay: navItems.length * 0.08, duration: 0.4 }}
+              >
+                <Link
+                  href="/favorites"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="font-serif text-4xl font-extrabold tracking-wider hover:text-[#C49B66] transition-colors block italic lowercase"
+                >
+                  {t("navFavorites", locale)} ({favoriteCount})
+                </Link>
+              </motion.div>
             </nav>
 
             {/* Bottom taglines */}

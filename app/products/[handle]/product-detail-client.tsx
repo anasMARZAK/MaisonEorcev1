@@ -13,7 +13,8 @@ const Reviews = dynamic(() => import("../../../components/home/reviews"), { ssr:
 import ProductGallery from "../../../components/product/product-gallery";
 import ProductVariants from "../../../components/product/product-variants";
 import ProductInfoAccordion from "../../../components/product/product-info-accordion";
-import { Award, Globe, ShoppingBag } from "lucide-react";
+import { Award, Globe, ShoppingBag, Heart } from "lucide-react";
+import { useFavoritesStore } from "../../../store/favorites-store";
 
 interface ProductDetailClientProps {
   initialProduct: Product | null;
@@ -28,6 +29,9 @@ export default function ProductDetailClient({
 }: ProductDetailClientProps) {
   const locale = useCartStore((state) => state.locale);
   const { addToCart, isLoading } = useCart();
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
 
   // 1. Fetch product
   const { data: product } = useQuery({
@@ -36,6 +40,8 @@ export default function ProductDetailClient({
     initialData: initialProduct,
     enabled: !!handle,
   });
+
+  const isFav = product ? favorites.some((p) => p.id === product.id) : false;
 
   // 2. Local states
   const [activeImgIdx, setActiveImgIdx] = useState(0);
@@ -163,38 +169,79 @@ export default function ProductDetailClient({
               locale={locale}
             />
 
-            {/* Stepper + Add to Bag CTA */}
-            <div className="flex gap-4 border-t-2 border-[#1A1917]/10 dark:border-[#F5F3EE]/15 pt-6 items-center">
+            {/* Checkout & Favorite CTAs */}
+            <div className="flex flex-col gap-4 border-t-2 border-[#1A1917]/10 dark:border-[#F5F3EE]/15 pt-6">
               
-              {/* Stepper - Flat monospace square block */}
-              <div className="flex items-center border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none h-12">
+              {/* Stepper + Add to Bag + Favorite Row */}
+              <div className="flex gap-4 items-center w-full">
+                
+                {/* Stepper - Flat monospace square block */}
+                <div className="flex items-center border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none h-12 shrink-0">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-2.5 hover:bg-[#1A1917]/10 dark:hover:bg-[#F5F3EE]/10 h-full text-[#1A1917]/70 dark:text-[#F5F3EE]/70 font-mono text-xs cursor-pointer font-bold"
+                    aria-label="Decrease quantity"
+                  >
+                    -
+                  </button>
+                  <span className="px-3 text-[10px] font-mono font-bold min-w-[24px] text-center text-[#1A1917] dark:text-[#F5F3EE] border-x border-[#1A1917] dark:border-[#F5F3EE] h-full flex items-center justify-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="px-2.5 hover:bg-[#1A1917]/10 dark:hover:bg-[#F5F3EE]/10 h-full text-[#1A1917]/70 dark:text-[#F5F3EE]/70 font-mono text-xs cursor-pointer font-bold"
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Add CTA - Brutalist shadow button */}
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-2.5 hover:bg-[#1A1917]/10 dark:hover:bg-[#F5F3EE]/10 h-full text-[#1A1917]/70 dark:text-[#F5F3EE]/70 font-mono text-xs cursor-pointer font-bold"
-                  aria-label="Decrease quantity"
+                  onClick={handleAddToCart}
+                  disabled={isLoading || isBuyingNow}
+                  className="flex-1 bg-[#1A1917] text-[#F5F3EE] dark:bg-[#F5F3EE] dark:text-[#1A1917] border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none h-12 text-[10px] font-mono tracking-[0.25em] uppercase font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-brutal hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer"
                 >
-                  -
+                  <ShoppingBag strokeWidth={2} className="size-4" />
+                  {isLoading ? t("loading", locale) : t("addToBag", locale)}
                 </button>
-                <span className="px-3 text-[10px] font-mono font-bold min-w-[24px] text-center text-[#1A1917] dark:text-[#F5F3EE] border-x border-[#1A1917] dark:border-[#F5F3EE] h-full flex items-center justify-center">
-                  {quantity}
-                </span>
+
+                {/* Favorite Icon Button - Brutalist shadow square button */}
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-2.5 hover:bg-[#1A1917]/10 dark:hover:bg-[#F5F3EE]/10 h-full text-[#1A1917]/70 dark:text-[#F5F3EE]/70 font-mono text-xs cursor-pointer font-bold"
-                  aria-label="Increase quantity"
+                  onClick={() => toggleFavorite(product)}
+                  className="w-12 h-12 border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none bg-transparent hover:bg-[#1A1917]/10 dark:hover:bg-[#F5F3EE]/10 flex items-center justify-center transition-all duration-300 shadow-brutal hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer shrink-0 text-[#1A1917] dark:text-[#F5F3EE]"
+                  title={isFav ? t("removeFavorite", locale) : t("addFavorite", locale)}
+                  type="button"
                 >
-                  +
+                  <Heart
+                    className={`size-4 transition-transform duration-200 active:scale-90 ${
+                      isFav ? "fill-[#9B2C2C] text-[#9B2C2C]" : ""
+                    }`}
+                    strokeWidth={2.5}
+                  />
                 </button>
               </div>
 
-              {/* Add CTA - Brutalist shadow button */}
+              {/* Buy Now CTA - Full-width premium gold brutalist button */}
               <button
-                onClick={handleAddToCart}
-                disabled={isLoading}
-                className="flex-1 bg-[#1A1917] text-[#F5F3EE] dark:bg-[#F5F3EE] dark:text-[#1A1917] border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none h-12 text-[10px] font-mono tracking-[0.25em] uppercase font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-brutal hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer"
+                onClick={async () => {
+                  if (!activeVariant) return;
+                  setIsBuyingNow(true);
+                  try {
+                    const updatedCart = await useCartStore.getState().addItem(activeVariant.id, quantity);
+                    if (updatedCart?.checkoutUrl) {
+                      window.location.href = updatedCart.checkoutUrl;
+                    }
+                  } catch (err) {
+                    console.error("Buy now failed:", err);
+                  } finally {
+                    setIsBuyingNow(false);
+                  }
+                }}
+                disabled={isLoading || isBuyingNow}
+                className="w-full bg-[#C49B66] text-[#1A1917] border-2 border-[#1A1917] dark:border-[#F5F3EE] rounded-none h-12 text-[10px] font-mono tracking-[0.25em] uppercase font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-brutal hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer"
               >
-                <ShoppingBag strokeWidth={2} className="size-4" />
-                {isLoading ? t("loading", locale) : t("addToBag", locale)}
+                {isBuyingNow ? t("loading", locale) : t("buyNow", locale)}
               </button>
             </div>
 

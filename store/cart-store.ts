@@ -21,7 +21,7 @@ interface CartStore {
   setCartId: (id: string | null) => void;
   updateCart: (cart: Cart | null) => void;
   clearCart: () => void;
-  addItem: (merchandiseId: string, quantity?: number) => Promise<void>;
+  addItem: (merchandiseId: string, quantity?: number) => Promise<Cart | null>;
   removeItem: (lineId: string) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
 }
@@ -100,6 +100,7 @@ export const useCartStore = create<CartStore>()(
             );
             updateCart(updatedCart);
             toast.success(locale === "en" ? "Added to bag" : "Ajouté au panier");
+            return updatedCart;
           } catch (err: any) {
             const errMsg = err.message || "";
             // If the cart is invalid, expired, or not found on Shopify servers, provision a new one and try again
@@ -121,6 +122,7 @@ export const useCartStore = create<CartStore>()(
               );
               updateCart(updatedCart);
               toast.success(locale === "en" ? "Added to bag" : "Ajouté au panier");
+              return updatedCart;
             } else {
               throw err;
             }
@@ -128,6 +130,7 @@ export const useCartStore = create<CartStore>()(
         } catch (err: any) {
           console.error(err);
           toast.error(err.message || (locale === "en" ? "An error occurred." : "Une erreur est survenue."));
+          return null;
         } finally {
           set({ isLoading: false });
         }

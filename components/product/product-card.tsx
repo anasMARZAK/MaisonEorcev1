@@ -6,7 +6,9 @@ import Link from "next/link";
 import { Product } from "../../types/shopify";
 import { useCartStore } from "../../store/cart-store";
 import { useCart } from "../../hooks/use-cart";
+import { useFavoritesStore } from "../../store/favorites-store";
 import { t } from "../../lib/copy-dict";
+import { Heart } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +16,9 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const locale = useCartStore((state) => state.locale);
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  const isFav = favorites.some((p) => p.id === product.id);
   const { addToCart, isLoading } = useCart();
   const [hovered, setHovered] = useState(false);
 
@@ -98,6 +103,25 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </span>
               )}
             </div>
+
+            {/* Favorite button - float top right */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(product);
+              }}
+              className="absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center border-2 border-[#1A1917] dark:border-[#F5F3EE] bg-[#F5F3EE] dark:bg-[#1A1917] text-[#1A1917] dark:text-[#F5F3EE] hover:bg-[#1A1917] hover:text-[#F5F3EE] dark:hover:bg-[#F5F3EE] dark:hover:text-[#1A1917] transition-all duration-200 cursor-pointer rounded-none"
+              title={isFav ? t("removeFavorite", locale) : t("addFavorite", locale)}
+              type="button"
+            >
+              <Heart
+                className={`size-4 transition-transform duration-200 active:scale-90 ${
+                  isFav ? "fill-[#9B2C2C] text-[#9B2C2C]" : "text-[#1A1917] dark:text-[#F5F3EE]"
+                }`}
+                strokeWidth={2.5}
+              />
+            </button>
 
             {/* Quick Add Overlay on Hover - Flat coupon style button */}
             <div className="absolute inset-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4 z-10 pointer-events-none">
