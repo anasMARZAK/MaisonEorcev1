@@ -61,9 +61,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                   src={mainImage.url}
                   alt={mainImage.altText || product.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 276px"
                   quality={60}
-                  className={`object-cover transition-opacity duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] grayscale contrast-[1.02] ${
+                  className={`object-cover transition-opacity duration-700 ease-out-expo grayscale contrast-[1.02] ${
                     hovered && images[1] ? "opacity-0" : "opacity-100"
                   }`}
                 />
@@ -73,9 +73,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                     src={hoverImage.url}
                     alt={hoverImage.altText || product.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 276px"
                     quality={60}
-                    className={`object-cover absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] scale-100 grayscale contrast-[1.05] ${
+                    className={`object-cover absolute inset-0 transition-all duration-700 ease-out-expo scale-100 grayscale contrast-[1.05] ${
                       hovered ? "opacity-100 scale-105" : "opacity-0"
                     }`}
                   />

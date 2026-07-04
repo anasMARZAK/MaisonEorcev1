@@ -3,12 +3,15 @@ import { Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
 import Providers from "../components/providers";
 import LenisProvider from "../components/lenis-provider";
+import dynamic from "next/dynamic";
 import Header from "../components/layout/header";
 import Footer from "../components/layout/footer";
 import PromoTicker from "../components/layout/promo-ticker";
-import CartDrawer from "../components/layout/cart-drawer";
 import LoadingScreen from "../components/layout/loading-screen";
-import PurchaseNotification from "../components/layout/purchase-notification";
+
+const CartDrawer = dynamic(() => import("../components/layout/cart-drawer"));
+const PurchaseNotification = dynamic(() => import("../components/layout/purchase-notification"));
+
 import { getStoreDomain } from "../lib/shopify/client";
 import { useMock } from "../lib/shopify";
 
@@ -83,10 +86,7 @@ export default function RootLayout({
           </>
         )}
         {showPreconnect && (
-          <>
-            <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
-            <link rel="dns-prefetch" href="https://cdn.shopify.com" />
-          </>
+          <link rel="dns-prefetch" href="https://cdn.shopify.com" />
         )}
       </head>
       <body className="antialiased min-h-screen bg-background text-foreground flex flex-col">

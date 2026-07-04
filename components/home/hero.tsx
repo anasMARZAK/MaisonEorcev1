@@ -85,7 +85,7 @@ export default function Hero() {
             fill
             priority
             fetchPriority="high"
-            quality={75}
+            quality={65}
             sizes="(max-width: 1024px) 100vw, 45vw"
             className="object-cover grayscale brightness-[0.9] contrast-[1.05]"
             /* Temporary inline styling so it runs smoothly even if image does not resolve immediately */

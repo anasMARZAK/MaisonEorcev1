@@ -85,6 +85,9 @@ const config: Config = {
         "marquee-slow": "marquee 40s linear infinite",
         "pulse-slow": "pulseSlow 8s ease-in-out infinite",
       },
+      transitionTimingFunction: {
+        "out-expo": "cubic-bezier(0.19, 1, 0.22, 1)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

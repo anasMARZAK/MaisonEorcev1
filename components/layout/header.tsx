@@ -31,7 +31,7 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F5F3EE] dark:bg-[#1A1917] border-b-2 border-[#1A1917] dark:border-[#F5F3EE] h-16 flex items-center justify-between px-6 md:px-12 w-full">
         
         {/* Left: Logo - Big Serif Couture Branding */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center min-h-[44px] py-1 px-2 -ml-2">
           <span className="font-serif text-base md:text-lg tracking-[0.25em] font-extrabold text-[#1A1917] dark:text-[#F5F3EE] uppercase">
             Maison Écorce
           </span>
@@ -67,7 +67,7 @@ export default function Header() {
           {/* Language Toggle */}
           <button
             onClick={toggleLanguage}
-            className="hover:underline transition-all py-1 cursor-pointer"
+            className="hover:underline transition-all py-3 px-2 cursor-pointer flex items-center min-h-[44px]"
             title="Toggle Language"
           >
             LN: <span className="text-[#8B6230] dark:text-[#C49B66]">{locale}</span>
@@ -76,7 +76,7 @@ export default function Header() {
           {/* Favorites Link */}
           <Link
             href="/favorites"
-            className="hover:underline transition-all py-1 cursor-pointer"
+            className="hover:underline transition-all py-3 px-2 cursor-pointer flex items-center min-h-[44px]"
             title={t("favoritesTitle", locale)}
           >
             {t("navFavorites", locale)} ({favoriteCount})
@@ -85,7 +85,7 @@ export default function Header() {
           {/* Text-based Cart Trigger - Brutalist styling */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="border border-[#1A1917] dark:border-[#F5F3EE] hover:bg-[#1A1917] hover:text-[#F5F3EE] dark:hover:bg-[#F5F3EE] dark:hover:text-[#1A1917] px-4 py-1.5 transition-all duration-200 cursor-pointer"
+            className="border border-[#1A1917] dark:border-[#F5F3EE] hover:bg-[#1A1917] hover:text-[#F5F3EE] dark:hover:bg-[#F5F3EE] dark:hover:text-[#1A1917] px-4 py-2 transition-all duration-200 cursor-pointer flex items-center min-h-[40px]"
             title={t("cartTitle", locale)}
           >
             BAG ({totalItems})
@@ -94,7 +94,7 @@ export default function Header() {
           {/* Mobile menu trigger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center cursor-pointer p-1"
+            className="md:hidden flex items-center justify-center cursor-pointer p-3 -mr-3 min-w-[44px] min-h-[44px]"
             aria-label="Toggle Mobile Menu"
           >
             {mobileMenuOpen ? (

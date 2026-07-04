@@ -80,8 +80,8 @@ export default function Ugc() {
                   src={img.url}
                   alt="Customer community styling shot"
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] grayscale contrast-[1.05]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 368px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out-expo grayscale contrast-[1.05]"
                 />
                 
                 {/* Hover overlay details - High contrast solid black block */}
