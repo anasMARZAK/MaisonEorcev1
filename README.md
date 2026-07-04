@@ -31,9 +31,11 @@ To ensure the storefront can be previewed offline or in sandbox testing, a dual-
 
 ```mermaid
 graph TD
-    A[Shopify Client Selector] --> B{Env variables set?}
-    B -- Yes --> C[realShopifyClient] --> D[Shopify Storefront API GraphQL]
-    B -- No --> E[mockClient] --> F[Local Simulated Database]
+    A["Shopify Client Selector"] --> B{"Env variables set?"}
+    B -->|Yes| C["realShopifyClient"]
+    C --> D["Shopify Storefront API GraphQL"]
+    B -->|No| E["mockClient"]
+    E --> F["Local Simulated Database"]
 ```
 
 ### 2. Zustand Cart & Shopify Storefront API Sync
@@ -50,11 +52,11 @@ sequenceDiagram
     User->>Hook: Click Add to Bag / Buy Now
     Hook->>Store: addItem(variantId, qty)
     Store->>Store: Set isLoading(true)
-    Alt Cart ID does not exist
+    alt Cart ID does not exist
         Store->>API: createCart()
         API-->>Store: Returns Cart ID & checkoutUrl
         Store->>DB: Persist Cart ID
-    End
+    end
     Store->>API: addToCart(cartId, variantId, qty)
     API-->>Store: Returns updated Cart object
     Store->>Store: updateCart(cart)
@@ -68,12 +70,13 @@ A persistent, lightweight client-side favorites system.
 
 ```mermaid
 graph LR
-    UI[ProductCard / PDP Heart Icon] -->|Click| Store[Zustand FavoritesStore]
-    Store -->|Toggle product| State{In favorites array?}
-    State -- Yes -->|Remove| NewState[Filter item out]
-    State -- No -->|Add| NewState[Append item]
-    NewState -->|Write| DB[LocalStorage]
-    NewState -->|Reactive Selection| UI
+    UI["ProductCard / PDP Heart Icon"] -->|Click| Store["Zustand FavoritesStore"]
+    Store -->|Toggle product| State{"In favorites array?"}
+    State -->|Yes - Remove| Filter["Filter item out"]
+    State -->|No - Add| Append["Append item"]
+    Filter --> Write["Write to LocalStorage"]
+    Append --> Write
+    Write -->|Reactive Update| UI
 ```
 
 ### 4. Dynamic Bilingual Translation Flow
@@ -81,10 +84,10 @@ All UI strings are dynamically translated using a custom dictionary helper.
 
 ```mermaid
 graph TD
-    User[Toggle Language] -->|locale updated| Store[Zustand CartStore]
-    Store -->|locale: 'fr' or 'en'| Hook[Components / UI]
-    Hook -->|t('key', locale)| Dict[copy-dict.ts]
-    Dict -->|Look up DICTIONARY[key]| UI[Render translated text]
+    User["Toggle Language"] -->|locale updated| Store["Zustand CartStore"]
+    Store -->|locale: 'fr' or 'en'| Hook["Components / UI"]
+    Hook -->|t('key', locale)| Dict["copy-dict.ts"]
+    Dict -->|Look up DICTIONARY| UI["Render translated text"]
 ```
 
 ### 5. Loading & Route Transitions Lifecycle
@@ -99,10 +102,10 @@ sequenceDiagram
 
     Browser->>Loader: Initial Session Load
     Loader->>Loader: Check hasLoadedOnce in session
-    Alt First load in session
+    alt First load in session
         Loader->>Loader: Increment progress bar (0% -> 100%)
         Loader->>Loader: Fade-out loading screen (opacity: 0)
-    End
+    end
     Loader->>Template: Unlock Viewport
     Browser->>Template: Route Navigation (Path change)
     Template->>Page: Trigger exit (y: -12, opacity: 0)
