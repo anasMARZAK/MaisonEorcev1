@@ -339,6 +339,38 @@ export const realShopifyClient = {
     }
   },
 
+  checkoutSingleItem: async (
+    variantId: string,
+    quantity: number,
+    locale?: string
+  ): Promise<string> => {
+    try {
+      const queryStr = `
+        mutation CreateSingleItemCart($input: CartInput!, $lang: LanguageCode) @inContext(language: $lang) {
+          cartCreate(input: $input) {
+            cart {
+              checkoutUrl
+            }
+          }
+        }
+      `;
+      const variables = {
+        input: {
+          lines: [{ merchandiseId: variantId, quantity }],
+        },
+        lang: locale ? locale.toUpperCase() : "FR",
+      };
+      const data = await shopifyFetch<{ cartCreate: { cart: { checkoutUrl: string } } }>(queryStr, variables);
+      if (!data?.cartCreate?.cart?.checkoutUrl) {
+        throw new Error("Failed to generate checkout URL for single item.");
+      }
+      return data.cartCreate.cart.checkoutUrl;
+    } catch (error) {
+      console.error("[shopifyClient.checkoutSingleItem error]:", error);
+      throw error instanceof Error ? error : new Error(String(error));
+    }
+  },
+
   getCart: async (cartId: string, locale?: string): Promise<Cart | null> => {
     try {
       const queryStr = `

@@ -228,9 +228,13 @@ export default function ProductDetailClient({
                   if (!activeVariant) return;
                   setIsBuyingNow(true);
                   try {
-                    const updatedCart = await useCartStore.getState().addItem(activeVariant.id, quantity);
-                    if (updatedCart?.checkoutUrl) {
-                      window.location.href = updatedCart.checkoutUrl;
+                    const checkoutUrl = await shopifyClient.checkoutSingleItem(
+                      activeVariant.id,
+                      quantity,
+                      locale
+                    );
+                    if (checkoutUrl) {
+                      window.location.href = checkoutUrl;
                     }
                   } catch (err) {
                     console.error("Buy now failed:", err);

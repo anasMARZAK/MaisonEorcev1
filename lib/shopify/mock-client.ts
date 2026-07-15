@@ -293,6 +293,17 @@ export const mockClient = {
     return newCart;
   },
 
+  checkoutSingleItem: async (
+    variantId: string,
+    quantity: number,
+    locale?: string
+  ): Promise<string> => {
+    void locale;
+    void quantity;
+    await sleep();
+    return `https://checkout.maison-ecorce.myshopify.com/checkout/mock-single-${variantId}`;
+  },
+
   getCart: async (cartId: string, locale?: string): Promise<Cart | null> => {
     void locale;
     await sleep();
